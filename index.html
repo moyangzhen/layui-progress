@@ -1,20 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="https://heerey525.github.io/layui-v2.4.3/layui-v2.4.4/css/layui.css">
 </head>
+
 <body>
-    <div class="test">进度条实例</div>
-    <div class="layui-progress">
-        <div class="layui-progress-bar" lay-percent="40%"></div>
+      正如你上述看到的，除了百分数，还支持分数（layui 2.1.7 新增）
+      <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>动态改变进度</legend>
+      </fieldset>
+      <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="demo">
+        <div class="layui-progress-bar" lay-percent="0%"></div>
       </div>
-      <div style="margin-top: 15px; width:300px">
-        <div class="layui-progress">
-          <div class="layui-progress-bar" lay-percent="70%"></div>
-        </div>
+      <div class="site-demo-button" style="margin-top: 20px; margin-bottom: 0;">
+        <button class="layui-btn site-demo-active" data-type="setPercent">设置50%</button>
+        <button class="layui-btn site-demo-active testProgress" data-type="loading">模拟loading</button>
       </div>
+       
+      <!-- 示例-970 -->
+      <ins class="adsbygoogle" style="display:inline-block;width:970px;height:90px" data-ad-client="ca-pub-6111334333458862" data-ad-slot="3820120620"></ins>
+    
+    <script src="https://heerey525.github.io/layui-v2.4.3/layui-v2.4.4/layui.js"></script>
+    <script>
+        layui.use('element', function(){
+          var $ = layui.jquery
+          ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+          
+          //触发事件
+          var active = {
+            setPercent: function(){
+              //设置50%进度
+              element.progress('demo', '50%')
+            }
+            ,loading: function(othis){
+              var DISABLED = 'layui-btn-disabled';
+              if(othis.hasClass(DISABLED)) return;
+            
+              //模拟loading
+              var n = 0, timer = setInterval(function(){
+                n = n + Math.random()*10|0;  
+                if(n>100){
+                  n = 100;
+                  clearInterval(timer);
+                  othis.removeClass(DISABLED);
+                }
+                element.progress('demo', n+'%');
+              }, 300+Math.random()*1000);
+              
+              othis.addClass(DISABLED);
+            }
+          };
+          
+          $('.site-demo-active').on('click', function(){
+            var othis = $(this), type = $(this).data('type');
+            active[type] ? active[type].call(this, othis) : '';
+          });
+        });
+        </script>
+
 </body>
+
 </html>
